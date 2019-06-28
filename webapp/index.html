@@ -11,16 +11,10 @@
          data-sap-ui-libs="sap.m"
          data-sap-ui-compatVersion="edge"
          data-sap-ui-preload="async"
+         data-sap-ui-onInit="module:sap/ui/demo/walkthrough/index"
          data-sap-ui-resourceroots='{
             "sap.ui.demo.walkthrough": "./"
          }' >
-      </script>
-      <script>
-         sap.ui.getCore().attachInit(function () {
-            sap.ui.xmlview({
-               viewName : "sap.ui.demo.walkthrough.view.App"
-            }).placeAt("content");
-         });
       </script>
    </head>
    <body class="sapUiBody" id="content">
