@@ -20,10 +20,7 @@
 				numberUnit="{view>/currency}"
 				numberState="{=	${invoice>ExtendedPrice} > 50 ? 'Error' : 'Success' }">
 				<firstStatus>
-					<ObjectStatus text="{
-						path: 'invoice>Status',
-						formatter: '.formatter.statusText'
-					}"/>
+					<ObjectStatus text="{= ${invoice>Status} === 'A' ? ${i18n>invoiceStatusA} : ${invoice>Status} === 'B' ? ${i18n>invoiceStatusB} : ${i18n>invoiceStatusC} }"/>
 				</firstStatus>
 			</ObjectListItem>
 		</items>
