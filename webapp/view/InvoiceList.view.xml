@@ -3,6 +3,9 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 	<List
+      growing="true"
+      growingScrollToLoad="true"
+      growingThreshold="20"
       id="invoiceList"
 		headerText="{i18n>invoiceListTitle}"
 		class="sapUiResponsiveMargin"
