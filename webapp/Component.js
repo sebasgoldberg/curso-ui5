@@ -5,7 +5,7 @@ sap.ui.define([
 
 ], function (UIComponent, JSONModel, HelloDialog) {
 	"use strict";
-	return UIComponent.extend("sap.ui.demo.walkthrough.Component", {
+	return UIComponent.extend("sgoldberg.sap.ui.demo.walkthrough.Component", {
 		metadata : {
 			manifest : "json"
 		},

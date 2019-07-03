@@ -1,7 +1,7 @@
 {
     "_version": "1.12.0",
     "sap.app": {
-      "id": "sap.ui.demo.walkthrough",
+      "id": "sgoldberg.sap.ui.demo.walkthrough",
       "type": "application",
       "i18n": "i18n/i18n.properties",
       "title": "{{appTitle}}",
@@ -29,7 +29,7 @@
     },
     "sap.ui5": {
       "rootView": {
-          "viewName": "sap.ui.demo.walkthrough.view.App",
+          "viewName": "sgoldberg.sap.ui.demo.walkthrough.view.App",
           "type": "XML",
           "async": true,
           "id": "app"
@@ -44,7 +44,7 @@
         "i18n": {
           "type": "sap.ui.model.resource.ResourceModel",
           "settings": {
-            "bundleName": "sap.ui.demo.walkthrough.i18n.i18n"
+            "bundleName": "sgoldberg.sap.ui.demo.walkthrough.i18n.i18n"
           }
         },
         "invoice": {
@@ -55,7 +55,7 @@
         "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
-        "viewPath": "sap.ui.demo.walkthrough.view",
+        "viewPath": "sgoldberg.sap.ui.demo.walkthrough.view",
         "controlId": "app",
         "controlAggregation": "pages",
         "async": true

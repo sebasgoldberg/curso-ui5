@@ -3,7 +3,7 @@ sap.ui.define([
 	"sap/m/MessageToast"
 ], function (Controller, MessageToast) {
 	"use strict";
-	return Controller.extend("sap.ui.demo.walkthrough.controller.HelloPanel", {
+	return Controller.extend("sgoldberg.sap.ui.demo.walkthrough.controller.HelloPanel", {
 		onShowHello : function () {
 			// read msg from i18n model
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
