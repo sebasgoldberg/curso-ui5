@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns:m="sap.m" xmlns:core="sap.ui.core">
+
+    <m:HBox class="myAppDemoWTProductRating">
+
+        <m:RatingIndicator
+            value="{$this>/value}"
+            iconSize="2rem"
+            visualMode="Half"
+            liveChange="_onRate"
+            id="rating"
+            />
+        
+        <m:Label
+            text="{i18n>productRatingLabelInitial}"
+            class="sapUiSmallMargin"
+            id="label"
+            />
+        
+        <m:Button
+            text="{i18n>productRatingButton}"
+            press="_onSubmit"
+            class="sapUiTinyMarginTopBottom"
+            id="button"
+            />
+
+    </m:HBox>
+
+</core:FragmentDefinition>
