@@ -1,20 +1,12 @@
 sap.ui.define([
-	"sap/ui/core/Control",
-	"sap/m/RatingIndicator",
-	"sap/m/Label",
-	"sap/m/Button"
-
-], function (Control, RatingIndicator, Label, Button) {
+	'sap/ui/core/XMLComposite',
+], function (XMLComposite) {
 	"use strict";
-	return Control.extend("sap.ui.demo.walkthrough.control.ProductRating", {
-		metadata : {
+	var ProductRatingClass = XMLComposite.extend("sap.ui.demo.walkthrough.control.ProductRating", {
+
+        metadata : {
 			properties : {
 				value: 	{type : "float", defaultValue : 0}
-			},
-			aggregations : {
-				_rating : {type : "sap.m.RatingIndicator", multiple: false, visibility : "hidden"},
-				_label : {type : "sap.m.Label", multiple: false, visibility : "hidden"},
-				_button : {type : "sap.m.Button", multiple: false, visibility : "hidden"}
 			},
 			events : {
 				change : {
@@ -23,68 +15,45 @@ sap.ui.define([
 					}
 				}
 			}
-		},
-		init : function () {
-			this.setAggregation("_rating", new RatingIndicator({
-				value: this.getValue(),
-				iconSize: "2rem",
-				visualMode: "Half",
-				liveChange: this._onRate.bind(this)
-			}));
-			this.setAggregation("_label", new Label({
-				text: "{i18n>productRatingLabelInitial}"
-			}).addStyleClass("sapUiSmallMargin"));
-			this.setAggregation("_button", new Button({
-				text: "{i18n>productRatingButton}",
-				press: this._onSubmit.bind(this)
-			}).addStyleClass("sapUiTinyMarginTopBottom"));
-		},
+        },
+        
+        fragment: "sap.ui.demo.walkthrough.control.ProductRating",
 
-		setValue: function (fValue) {
-			this.setProperty("value", fValue, true);
-			this.getAggregation("_rating").setValue(fValue);
-		},
+    });
 
-		reset: function () {
-			var oResourceBundle = this.getModel("i18n").getResourceBundle();
+    ProductRatingClass.prototype._onRate = function (oEvent) {
+        var oRessourceBundle = this.getModel("i18n").getResourceBundle();
+        var fValue = oEvent.getParameter("value");
+        this.setProperty("value", fValue, true);
+        this.byId("label").setText(oRessourceBundle.getText("productRatingLabelIndicator", [fValue, oEvent.getSource().getMaxValue()]));
+        this.byId("label").setDesign("Bold");
+    };
 
-			this.setValue(0);
-			this.getAggregation("_label").setDesign("Standard");
-			this.getAggregation("_rating").setEnabled(true);
-			this.getAggregation("_label").setText(oResourceBundle.getText("productRatingLabelInitial"));
-			this.getAggregation("_button").setEnabled(true);
-		},
+    ProductRatingClass.prototype._onSubmit = function (oEvent) {
+        var oResourceBundle = this.getModel("i18n").getResourceBundle();
 
-		_onRate : function (oEvent) {
-			var oRessourceBundle = this.getModel("i18n").getResourceBundle();
-			var fValue = oEvent.getParameter("value");
+        this.byId("rating").setEnabled(false);
+        this.byId("label").setText(oResourceBundle.getText("productRatingLabelFinal"));
+        this.byId("button").setEnabled(false);
+        this.fireEvent("change", {
+            value: this.getValue()
+        });
+    };
 
-			this.setProperty("value", fValue, true);
+    ProductRatingClass.prototype.setValue = function (fValue) {
+        this.setProperty("value", fValue, true);
+        this.byId("rating").setValue(fValue);
+    };
 
-			this.getAggregation("_label").setText(oRessourceBundle.getText("productRatingLabelIndicator", [fValue, oEvent.getSource().getMaxValue()]));
-			this.getAggregation("_label").setDesign("Bold");
-		},
+    ProductRatingClass.prototype.reset = function () {
+        var oResourceBundle = this.getModel("i18n").getResourceBundle();
 
-		_onSubmit : function (oEvent) {
-			var oResourceBundle = this.getModel("i18n").getResourceBundle();
+        this.setValue(0);
+        this.byId("label").setDesign("Standard");
+        this.byId("rating").setEnabled(true);
+        this.byId("label").setText(oResourceBundle.getText("productRatingLabelInitial"));
+        this.byId("button").setEnabled(true);
+    };
 
-			this.getAggregation("_rating").setEnabled(false);
-			this.getAggregation("_label").setText(oResourceBundle.getText("productRatingLabelFinal"));
-			this.getAggregation("_button").setEnabled(false);
-			this.fireEvent("change", {
-				value: this.getValue()
-			});
-		},
-		renderer : function (oRM, oControl) {
-			oRM.write("<div");
-			oRM.writeControlData(oControl);
-			oRM.addClass("myAppDemoWTProductRating");
-			oRM.writeClasses();
-			oRM.write(">");
-			oRM.renderControl(oControl.getAggregation("_rating"));
-			oRM.renderControl(oControl.getAggregation("_label"));
-			oRM.renderControl(oControl.getAggregation("_button"));
-			oRM.write("</div>");
-		}
-	});
+    return ProductRatingClass;
 });
