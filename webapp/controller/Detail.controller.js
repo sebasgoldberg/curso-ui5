@@ -23,7 +23,7 @@ sap.ui.define([
 				path: decodeURIComponent(oEvent.getParameter("arguments").invoicePath),
 				model: "invoice",
 				parameters: {
-					expand: "shipper,shipper/invoices",
+					expand: "shipper",
 				},
 			});
 		},
