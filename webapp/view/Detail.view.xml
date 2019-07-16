@@ -20,7 +20,12 @@
 				headerText="{i18n>invoiceListTitle}"
 				class="sapUiResponsiveMargin"
 				width="auto"
-				items="{invoice>shipper/invoices}">
+				items="{
+					path : 'invoice>shipper/invoices',
+					parameters:{
+						expand: 'shipper'
+					}
+				}">
 			<items>
 				<ObjectListItem
 					title="{invoice>Quantity} x {invoice>ProductName}"
@@ -41,7 +46,7 @@
 						}"/>
 					</firstStatus>
 					<attributes>
-						<ObjectAttribute text="X {invoice>shipper/Address}" />
+						<ObjectAttribute text="{invoice>shipper/Address}" />
 					</attributes>
 				</ObjectListItem>
 			</items>
