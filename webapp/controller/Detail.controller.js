@@ -1,20 +1,30 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
+	"sap/ui/model/json/JSONModel",
+	"../model/formatter",
 	"sap/ui/core/routing/History",
 	"sap/m/MessageToast",
 	"sap/ui/core/UIComponent"
-], function (Controller, History, MessageToast, UIComponent) {
+], function (Controller, JSONModel, formatter, History, MessageToast, UIComponent) {
 	"use strict";
 	return Controller.extend("sgoldberg.sap.ui.demo.walkthrough.controller.Detail", {
+		formatter: formatter, 
 		onInit: function () {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("detail").attachPatternMatched(this._onObjectMatched, this);
+			var oViewModel = new JSONModel({
+				currency: "EUR"
+			});
+			this.getView().setModel(oViewModel, "view");
 		},
 		_onObjectMatched: function (oEvent) {
 			this.byId("rating").reset();
 			this.getView().bindElement({
 				path: decodeURIComponent(oEvent.getParameter("arguments").invoicePath),
-				model: "invoice"
+				model: "invoice",
+				parameters: {
+					expand: "shipper,shipper/invoices",
+				},
 			});
 		},
 
