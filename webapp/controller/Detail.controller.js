@@ -26,6 +26,10 @@ sap.ui.define([
 					expand: "shipper",
 				},
 			});
+			this.byId('invoiceListShipper').bindElement({
+				path: decodeURIComponent(oEvent.getParameter("arguments").invoicePath)+'/shipper',
+				model: "invoice",
+			});
 		},
 
 		onNavBack: function () {

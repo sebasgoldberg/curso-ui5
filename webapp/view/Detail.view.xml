@@ -21,7 +21,7 @@
 				class="sapUiResponsiveMargin"
 				width="auto"
 				items="{
-					path : 'invoice>shipper/invoices',
+					path : 'invoice>invoices',
 					parameters:{
 						expand: 'shipper'
 					}
