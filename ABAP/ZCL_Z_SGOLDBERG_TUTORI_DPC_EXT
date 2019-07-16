@@ -6,11 +6,13 @@ class ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT definition
 public section.
 protected section.
 
+  methods INVOICES_GET_ENTITY
+    redefinition .
   methods INVOICES_GET_ENTITYSET
     redefinition .
   methods SHIPPERSET_GET_ENTITY
     redefinition .
-  methods INVOICES_GET_ENTITY
+  methods INVOICES_DELETE_ENTITY
     redefinition .
 private section.
 ENDCLASS.
@@ -18,6 +20,50 @@ ENDCLASS.
 
 
 CLASS ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT IMPLEMENTATION.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT->INVOICES_DELETE_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY_D(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method INVOICES_DELETE_ENTITY.
+
+    DATA:
+      LV_SHIPPER_NAME TYPE ZJSG_INVOICES-SHIPPER_NAME,
+      LV_PRODUCT_NAME TYPE ZJSG_INVOICES-PRODUCT_NAME,
+      LV_QUANTITY TYPE ZJSG_INVOICES-QUANTITY.
+
+    LOOP AT IT_KEY_TAB REFERENCE INTO DATA(LV_REF_KEY).
+      CASE LV_REF_KEY->NAME.
+
+        WHEN 'ShipperName'.
+          LV_SHIPPER_NAME = LV_REF_KEY->VALUE.
+
+        WHEN 'ProductName'.
+          LV_PRODUCT_NAME = LV_REF_KEY->VALUE.
+
+        WHEN 'Quantity'.
+          LV_QUANTITY = LV_REF_KEY->VALUE.
+
+      ENDCASE.
+    ENDLOOP.
+
+    DELETE
+    FROM ZJSG_INVOICES
+    WHERE
+      SHIPPER_NAME EQ LV_SHIPPER_NAME AND
+      PRODUCT_NAME EQ LV_PRODUCT_NAME AND
+      QUANTITY EQ LV_QUANTITY.
+
+  endmethod.
 
 
 * <SIGNATURE>---------------------------------------------------------------------------------------+
