@@ -3,8 +3,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"../model/formatter",
 	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
-], function (Controller, JSONModel, formatter, Filter, FilterOperator) {
+	"sap/ui/model/FilterOperator",
+	"sap/m/MessageToast"
+], function (Controller, JSONModel, formatter, Filter, FilterOperator, MessageToast) {
 	"use strict";
 	return Controller.extend("sgoldberg.sap.ui.demo.walkthrough.controller.InvoiceList", {
 		formatter: formatter, 
@@ -33,6 +34,19 @@ sap.ui.define([
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.navTo("detail", {
 				invoicePath: encodeURIComponent(oItem.getBindingContext("invoice").getPath())
+			});
+		},
+		onInvoiceDelete: function(oEvent) {
+			var oItem = oEvent.getParameter("listItem"),
+				sPath = oItem.getBindingContext('invoice').getPath();
+
+			this.getView().getModel('invoice').remove(sPath,{
+				success: function(){
+					MessageToast.show('Invoice eliminada com sucesso.');
+				}.bind(this),
+				error: function(e){
+					console.error(e);
+				}.bind(this),
 			});
 		}
 	});

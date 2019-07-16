@@ -3,6 +3,8 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 	<List
+		mode="Delete"
+		delete="onInvoiceDelete"
       growing="true"
       growingScrollToLoad="true"
       growingThreshold="20"
