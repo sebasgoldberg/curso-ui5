@@ -11,7 +11,7 @@
       },
       "dataSources": {
         "invoiceRemote": {
-        "uri": "http://cenw08psap01.resource.com.br:8000/sap/opu/odata/sap/Z_SGOLDBERG_TUTORIAL_SRV/",
+        "uri": "/sap/opu/odata/sap/Z_SGOLDBERG_TUTORIAL_SRV/",
         "type": "OData",
         "settings": {
           "odataVersion": "2.0"
