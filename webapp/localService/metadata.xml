@@ -1,26 +1,23 @@
-<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
-	<edmx:DataServices m:DataServiceVersion="1.0" m:MaxDataServiceVersion="3.0"
-					   xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
-		<Schema Namespace="NorthwindModel" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-			<EntityType Name="Invoice">
+<?xml version="1.0" encoding="utf-8"?>
+<Edmx Version="1.0" xmlns="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<DataServices m:DataServiceVersion="2.0">
+		<Schema Namespace="Z_SGOLDBERG_TUTORIAL_SRV" xml:lang="pt" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Invoice" sap:content-version="1">
 				<Key>
-					<PropertyRef Name="ProductName"/>
-					<PropertyRef Name="Quantity"/>
-					<PropertyRef Name="ShipperName"/>
+					<PropertyRef Name="ShipperName" />
+					<PropertyRef Name="ProductName" />
+					<PropertyRef Name="Quantity" />
 				</Key>
-				<Property Name="ShipperName" Type="Edm.String" Nullable="false" MaxLength="40" FixedLength="false"
-						  Unicode="true"/>
-				<Property Name="ProductName" Type="Edm.String" Nullable="false" MaxLength="40" FixedLength="false"
-						  Unicode="true"/>
-				<Property Name="Quantity" Type="Edm.Int16" Nullable="false"/>
-				<Property Name="ExtendedPrice" Type="Edm.Decimal" Precision="19" Scale="4"/>
+				<Property Name="ShipperName" Type="Edm.String" Nullable="false" MaxLength="40" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="ProductName" Type="Edm.String" Nullable="false" MaxLength="40" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="Quantity" Type="Edm.Int16" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="ExtendedPrice" Type="Edm.Decimal" Nullable="false" Precision="19" Scale="4" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
 			</EntityType>
-		</Schema>
-		<Schema Namespace="ODataWebV2.Northwind.Model" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-			<EntityContainer Name="NorthwindEntities" m:IsDefaultEntityContainer="true" p6:LazyLoadingEnabled="true"
-							 xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
-				<EntitySet Name="Invoices" EntityType="NorthwindModel.Invoice"/>
+			<EntityContainer Name="Z_SGOLDBERG_TUTORIAL_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="Invoices" EntityType="Z_SGOLDBERG_TUTORIAL_SRV.Invoice" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1" />
 			</EntityContainer>
+			<link rel="self" href="http://cenw08psap01.resource.com.br:8000/sap/opu/odata/sap/Z_SGOLDBERG_TUTORIAL_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom" />
+			<link rel="latest-version" href="http://cenw08psap01.resource.com.br:8000/sap/opu/odata/sap/Z_SGOLDBERG_TUTORIAL_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom" />
 		</Schema>
-	</edmx:DataServices>
-</edmx:Edmx>
+	</DataServices>
+</Edmx>
