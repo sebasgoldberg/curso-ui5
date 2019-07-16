@@ -16,6 +16,9 @@
 				path : 'ShipperName',
 				descending: true,
 				group : true
+			},
+			parameters:{
+				expand: 'shipper'
 			}
 		}">
       <headerToolbar>
@@ -45,6 +48,9 @@
 						formatter: '.formatter.statusText'
 					}"/>
 				</firstStatus>
+				<attributes>
+					<ObjectAttribute text="{invoice>shipper/Address}" />
+				</attributes>
 			</ObjectListItem>
 		</items>
 	</List>

@@ -8,13 +8,55 @@
 					<PropertyRef Name="ProductName" />
 					<PropertyRef Name="Quantity" />
 				</Key>
-				<Property Name="ShipperName" Type="Edm.String" Nullable="false" MaxLength="40" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
-				<Property Name="ProductName" Type="Edm.String" Nullable="false" MaxLength="40" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
-				<Property Name="Quantity" Type="Edm.Int16" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
-				<Property Name="ExtendedPrice" Type="Edm.Decimal" Nullable="false" Precision="19" Scale="4" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="ShipperName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="ProductName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="Quantity" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="ExtendedPrice" Type="Edm.Decimal" Nullable="false" Precision="19" Scale="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<NavigationProperty Name="shipper" Relationship="Z_SGOLDBERG_TUTORIAL_SRV.InvoiceToShipper" FromRole="ToRole_InvoiceToShipper" ToRole="FromRole_InvoiceToShipper" />
 			</EntityType>
+			<EntityType Name="Shipper" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ShipperName" />
+				</Key>
+				<Property Name="ShipperName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<Property Name="Address" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
+				<NavigationProperty Name="invoices" Relationship="Z_SGOLDBERG_TUTORIAL_SRV.ShipperToInvoices" FromRole="FromRole_ShipperToInvoices" ToRole="ToRole_ShipperToInvoices" />
+			</EntityType>
+			<Association Name="InvoiceToShipper" sap:content-version="1">
+				<End Type="Z_SGOLDBERG_TUTORIAL_SRV.Shipper" Multiplicity="1" Role="FromRole_InvoiceToShipper" />
+				<End Type="Z_SGOLDBERG_TUTORIAL_SRV.Invoice" Multiplicity="1" Role="ToRole_InvoiceToShipper" />
+				<ReferentialConstraint>
+					<Principal Role="FromRole_InvoiceToShipper">
+						<PropertyRef Name="ShipperName" />
+					</Principal>
+					<Dependent Role="ToRole_InvoiceToShipper">
+						<PropertyRef Name="ShipperName" />
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="ShipperToInvoices" sap:content-version="1">
+				<End Type="Z_SGOLDBERG_TUTORIAL_SRV.Shipper" Multiplicity="1" Role="FromRole_ShipperToInvoices" />
+				<End Type="Z_SGOLDBERG_TUTORIAL_SRV.Invoice" Multiplicity="*" Role="ToRole_ShipperToInvoices" />
+				<ReferentialConstraint>
+					<Principal Role="FromRole_ShipperToInvoices">
+						<PropertyRef Name="ShipperName" />
+					</Principal>
+					<Dependent Role="ToRole_ShipperToInvoices">
+						<PropertyRef Name="ShipperName" />
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
 			<EntityContainer Name="Z_SGOLDBERG_TUTORIAL_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
 				<EntitySet Name="Invoices" EntityType="Z_SGOLDBERG_TUTORIAL_SRV.Invoice" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1" />
+				<EntitySet Name="ShipperSet" EntityType="Z_SGOLDBERG_TUTORIAL_SRV.Shipper" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1" />
+				<AssociationSet Name="InvoiceToShipper_AssocSet" Association="Z_SGOLDBERG_TUTORIAL_SRV.InvoiceToShipper" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="ShipperSet" Role="FromRole_InvoiceToShipper" />
+					<End EntitySet="Invoices" Role="ToRole_InvoiceToShipper" />
+				</AssociationSet>
+				<AssociationSet Name="ShipperToInvoices_AssocSet" Association="Z_SGOLDBERG_TUTORIAL_SRV.ShipperToInvoices" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="ShipperSet" Role="FromRole_ShipperToInvoices" />
+					<End EntitySet="Invoices" Role="ToRole_ShipperToInvoices" />
+				</AssociationSet>
 			</EntityContainer>
 			<link rel="self" href="http://cenw08psap01.resource.com.br:8000/sap/opu/odata/sap/Z_SGOLDBERG_TUTORIAL_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom" />
 			<link rel="latest-version" href="http://cenw08psap01.resource.com.br:8000/sap/opu/odata/sap/Z_SGOLDBERG_TUTORIAL_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom" />

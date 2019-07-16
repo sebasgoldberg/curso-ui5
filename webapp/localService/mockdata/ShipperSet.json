@@ -1,0 +1,10 @@
+[
+    {
+      "ShipperName": "Fun Inc.",
+      "Address": "Fun Inc. address 123"
+    },
+    {
+      "ShipperName": "ACME",
+      "Address": "ACME address 456"
+    }
+  ]
