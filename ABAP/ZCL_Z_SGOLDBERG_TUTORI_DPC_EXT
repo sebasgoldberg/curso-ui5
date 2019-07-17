@@ -12,9 +12,13 @@ protected section.
     redefinition .
   methods INVOICES_GET_ENTITYSET
     redefinition .
+  methods INVOICES_UPDATE_ENTITY
+    redefinition .
   methods SHIPPERSET_GET_ENTITY
     redefinition .
-  methods INVOICES_UPDATE_ENTITY
+  methods SHIPPERSET_GET_ENTITYSET
+    redefinition .
+  methods INVOICES_CREATE_ENTITY
     redefinition .
 private section.
 ENDCLASS.
@@ -22,6 +26,37 @@ ENDCLASS.
 
 
 CLASS ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT IMPLEMENTATION.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT->INVOICES_CREATE_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY_C(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IO_DATA_PROVIDER               TYPE REF TO /IWBEP/IF_MGW_ENTRY_PROVIDER(optional)
+* | [<---] ER_ENTITY                      TYPE        ZCL_Z_SGOLDBERG_TUTORI_MPC=>TS_INVOICE
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method INVOICES_CREATE_ENTITY.
+
+    DATA:
+          LS_INVOICE TYPE ZJSG_INVOICES.
+
+    IO_DATA_PROVIDER->READ_ENTRY_DATA(
+      IMPORTING
+        ES_DATA = ER_ENTITY
+    ).
+
+    MOVE-CORRESPONDING ER_ENTITY TO LS_INVOICE.
+
+    INSERT ZJSG_INVOICES FROM LS_INVOICE.
+
+  endmethod.
 
 
 * <SIGNATURE>---------------------------------------------------------------------------------------+
@@ -322,6 +357,34 @@ CLASS ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT IMPLEMENTATION.
         ER_ENTITY               = ER_ENTITY
         ES_RESPONSE_CONTEXT     = ES_RESPONSE_CONTEXT
         .
+
+  endmethod.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT->SHIPPERSET_GET_ENTITYSET
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_FILTER_SELECT_OPTIONS       TYPE        /IWBEP/T_MGW_SELECT_OPTION
+* | [--->] IS_PAGING                      TYPE        /IWBEP/S_MGW_PAGING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IT_ORDER                       TYPE        /IWBEP/T_MGW_SORTING_ORDER
+* | [--->] IV_FILTER_STRING               TYPE        STRING
+* | [--->] IV_SEARCH_STRING               TYPE        STRING
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITYSET(optional)
+* | [<---] ET_ENTITYSET                   TYPE        ZCL_Z_SGOLDBERG_TUTORI_MPC=>TT_SHIPPER
+* | [<---] ES_RESPONSE_CONTEXT            TYPE        /IWBEP/IF_MGW_APPL_SRV_RUNTIME=>TY_S_MGW_RESPONSE_CONTEXT
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method SHIPPERSET_GET_ENTITYSET.
+
+    SELECT *
+    FROM ZJSG_SHIPPER
+    INTO CORRESPONDING FIELDS OF TABLE ET_ENTITYSET.
 
   endmethod.
 ENDCLASS.
