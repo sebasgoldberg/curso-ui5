@@ -19,16 +19,16 @@ sap.ui.define([
 		},
 		_onObjectMatched: function (oEvent) {
 			this.byId("rating").reset();
+			this.byId('invoiceListShipper').bindElement({
+				path: decodeURIComponent(oEvent.getParameter("arguments").invoicePath)+'/shipper',
+				model: "invoice",
+			});
 			this.getView().bindElement({
 				path: decodeURIComponent(oEvent.getParameter("arguments").invoicePath),
 				model: "invoice",
 				parameters: {
 					expand: "shipper",
 				},
-			});
-			this.byId('invoiceListShipper').bindElement({
-				path: decodeURIComponent(oEvent.getParameter("arguments").invoicePath)+'/shipper',
-				model: "invoice",
 			});
 		},
 

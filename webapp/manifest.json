@@ -73,16 +73,28 @@
           "pattern": "detail/{invoicePath}",
           "name": "detail",
           "target": "detail"
+        },
+        {
+          "pattern": "create",
+          "name": "create",
+          "target": "create"
         }
         ],
         "targets": {
         "overview": {
           "viewId": "overview",
-          "viewName": "Overview"
+          "viewName": "Overview",
+          "viewLevel": 1
         },
         "detail": {
           "viewId": "detail",
-          "viewName": "Detail"
+          "viewName": "Detail",
+          "viewLevel": 3
+        },
+        "create": {
+          "viewId": "create",
+          "viewName": "Create",
+          "viewLevel": 2
         }
         }
       },

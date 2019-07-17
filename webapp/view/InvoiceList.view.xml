@@ -27,6 +27,7 @@
          <Toolbar>
             <Title text="{i18n>invoiceListTitle}"/>
             <ToolbarSpacer/>
+			<Button text="Criar" type="Emphasized" press="onCriarInvoice" />
             <SearchField width="50%" search=".onFilterInvoices"/>
          </Toolbar>
       </headerToolbar>

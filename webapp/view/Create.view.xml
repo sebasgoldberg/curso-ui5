@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="sgoldberg.sap.ui.demo.walkthrough.controller.Detail"
+    controllerName="sgoldberg.sap.ui.demo.walkthrough.controller.Create"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:f="sap.ui.layout.form"
@@ -13,7 +13,6 @@
 		<ObjectHeader
 			intro="{invoice>ShipperName}"
 			title="{invoice>ProductName}"/>
-		<wt:ProductRating id="rating" class="sapUiSmallMarginBeginEnd" change=".onRatingChange"/>
 		<f:SimpleForm
 			editable="true"
 			layout="ResponsiveGridLayout"
@@ -32,6 +31,25 @@
 			columnsM="1"
 			singleContainerFullSize="false"
 			>
+			<Label text="Shipper"/>
+			<ComboBox
+				items="{invoice>/ShipperSet}"
+				selectedKey="{invoice>ShipperName}"
+				>
+				<core:Item key="{invoice>ShipperName}" text="{invoice>ShipperName}" />
+			</ComboBox>
+			<Label text="Product" />
+			<Input 
+				value="{invoice>ProductName}" 
+				maxLength="40"
+				/>
+			<Label text="Quantity" />
+			<Input
+				value="{
+					path: 'invoice>Quantity',
+					type: 'sap.ui.model.odata.type.Int16'
+					}" 
+				/>
 			<Label text="Valor" />
 			<Input 
 				value="{
@@ -43,45 +61,6 @@
 					}" 
 				/>
 		</f:SimpleForm>
-		<List
-			growing="true"
-			growingScrollToLoad="true"
-			growingThreshold="20"
-			id="invoiceListShipper"
-				headerText="{i18n>invoiceListTitle}"
-				class="sapUiResponsiveMargin"
-				width="auto"
-				items="{
-					path : 'invoice>invoices',
-					parameters:{
-						expand: 'shipper'
-					}
-				}">
-			<items>
-				<ObjectListItem
-					title="{invoice>Quantity} x {invoice>ProductName}"
-					number="{
-						parts: [{path: 'invoice>ExtendedPrice'}, {path: 'view>/currency'}],
-						type: 'sap.ui.model.type.Currency',
-						formatOptions: {
-							showMeasure: false
-						}
-					}"
-					numberUnit="{view>/currency}"
-					numberState="{=	${invoice>ExtendedPrice} > 50 ? 'Error' : 'Success' }"
-					>
-					<firstStatus>
-						<ObjectStatus text="{
-							path: 'invoice>Status',
-							formatter: '.formatter.statusText'
-						}"/>
-					</firstStatus>
-					<attributes>
-						<ObjectAttribute text="{invoice>shipper/Address}" />
-					</attributes>
-				</ObjectListItem>
-			</items>
-		</List>
 
 		<footer>
 			<OverflowToolbar>

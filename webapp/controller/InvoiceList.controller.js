@@ -48,6 +48,10 @@ sap.ui.define([
 					console.error(e);
 				}.bind(this),
 			});
+		},
+		onCriarInvoice: function (oEvent) {
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.navTo("create", {});
 		}
 	});
 });
