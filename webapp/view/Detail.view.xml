@@ -2,16 +2,46 @@
     controllerName="sgoldberg.sap.ui.demo.walkthrough.controller.Detail"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
 	xmlns:wt="sgoldberg.sap.ui.demo.walkthrough.control">
 	<Page
 		title="{i18n>detailPageTitle}"
 		showNavButton="true"
-		navButtonPress=".onNavBack">
+		navButtonPress=".onNavBack"
+		floatingFooter="true">
 		<ObjectHeader
 			intro="{invoice>ShipperName}"
 			title="{invoice>ProductName}"/>
 		<wt:ProductRating id="rating" class="sapUiSmallMarginBeginEnd" change=".onRatingChange"/>
-
+		<f:SimpleForm
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="Address"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false"
+			>
+			<Label text="Valor" />
+			<Input 
+				value="{
+					path: 'invoice>ExtendedPrice',
+					type: 'sap.ui.model.odata.type.Decimal',
+					constraints: {
+						precision: 19,
+						scale: 4 }
+					}" 
+				/>
+		</f:SimpleForm>
 		<List
 			growing="true"
 			growingScrollToLoad="true"
@@ -51,5 +81,14 @@
 				</ObjectListItem>
 			</items>
 		</List>
+
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="Gravar" press="onGravar" />
+				<Button type="Reject" text="Cancelar" press="onCancelar "/>
+			</OverflowToolbar>
+		</footer>
+
 	</Page>
 </mvc:View>

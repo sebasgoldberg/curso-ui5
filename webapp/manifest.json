@@ -48,7 +48,10 @@
           }
         },
         "invoice": {
-          "dataSource": "invoiceRemote"
+          "dataSource": "invoiceRemote",
+          "settings": {
+            "defaultBindingMode": "TwoWay"
+          }
         }
       },
       "routing": {

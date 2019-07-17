@@ -33,6 +33,9 @@ sap.ui.define([
 		},
 
 		onNavBack: function () {
+			var m = this.getView().getModel('invoice');
+			m.resetChanges();
+
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
 
@@ -42,6 +45,7 @@ sap.ui.define([
 				var oRouter = UIComponent.getRouterFor(this);
 				oRouter.navTo("overview", {}, true);
 			}
+
 		},
 
 		onRatingChange: function (oEvent) {
@@ -49,6 +53,48 @@ sap.ui.define([
 			var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
 
 			MessageToast.show(oResourceBundle.getText("ratingConfirmation", [fValue]));
+		},
+
+		onGravar: function (oEvent) {
+			var m = this.getView().getModel('invoice');
+			
+			if (!m.hasPendingChanges()){
+				MessageToast.show("Sem mudanças para gravar.");
+				return;
+			}
+
+			this.getView().setBusy(true);
+
+			m.submitChanges({
+				success: function (oData) {
+
+					MessageToast.show("Mudanças realizadas.");
+
+					this.getView().setBusy(false);
+
+				}.bind(this),
+				error: function (oData) {
+
+					MessageToast.show("Aconteceu um erro.");
+
+					console.error(oData);
+
+					this.getView().setBusy(false);
+				},
+			});
+
+		},
+
+		onCancelar: function (oEvent) {
+
+			var m = this.getView().getModel('invoice');
+
+			if (!m.hasPendingChanges()){
+				MessageToast.show("Sem mudanças para cancelar.");
+				return;
+			}
+
+			m.resetChanges();
 		}
 	});
 });
