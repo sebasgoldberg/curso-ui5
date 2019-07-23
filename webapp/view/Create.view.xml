@@ -60,6 +60,16 @@
 						scale: 4 }
 					}" 
 				/>
+			<Label text="Valor" />
+			<Input 
+				value="{
+					path: 'view>/copies',
+					type: 'sap.ui.model.type.Integer',
+					constraints: {
+						minimum: 0
+						}
+					}" 
+				/>
 		</f:SimpleForm>
 
 		<footer>
