@@ -17,23 +17,40 @@ sap.ui.define([
 			});
 			this.getView().setModel(oViewModel, "view");
 		},
+
 		_onCreateMatched: function (oEvent) {
+			this.aDeferreds = [];
 			this.getView().getModel("view").setProperty("/copies", 0);
 			var m = this.getView().getModel("invoice");
 			m.metadataLoaded().then(function(){
-				var oContext = m.createEntry('/Invoices',
-					{
+
+				var oDeferred = jQuery.Deferred(function(deferred){
+
+					var oContext = m.createEntry('/Invoices',{
 						properties: {
 							Quantity: 0,
 							ExtendedPrice: 0,
+						},
+						success: function(){
+							deferred.resolve();
+						},
+						error: function(){
+							deferred.reject();
 						}
 					});
-				this.getView().bindElement({
-					path: oContext.getPath(),
-					model: "invoice",
-				});
+
+					this.getView().bindElement({
+						path: oContext.getPath(),
+						model: "invoice",
+					});	
+
+				}.bind(this));
+
+				this.aDeferreds.push(oDeferred);
+
 			}.bind(this))
 		},
+
 		onNavBack: function () {
 			var m = this.getView().getModel('invoice');
 			m.resetChanges();
@@ -50,6 +67,27 @@ sap.ui.define([
 
 		},
 
+		createDeferredEntry: function(properties){
+			
+			var m = this.getView().getModel('invoice');
+
+			var oDeferred = jQuery.Deferred(function(deferred){
+				m.createEntry('/Invoices', {
+					properties: properties,
+					success: function(){
+						deferred.resolve();
+					},
+					error: function(){
+						deferred.reject();
+					}
+				});
+			}.bind(this))
+
+			this.aDeferreds.push(oDeferred);
+
+			return oDeferred;
+		},
+
 		onGravar: function (oEvent) {
 			var m = this.getView().getModel('invoice');
 
@@ -59,39 +97,30 @@ sap.ui.define([
 			var oNewInvoice = this.getView().getBindingContext("invoice").getObject();
 
 			for (var i=0;i<iCopies; i++){
-				m.createEntry('/Invoices', {
-					properties: {
-						ShipperName: oNewInvoice.ShipperName,
-						ProductName: oNewInvoice.ProductName + " (Copia "+(i+1)+")",
-						Quantity: oNewInvoice.Quantity,
-						ExtendedPrice: oNewInvoice.ExtendedPrice,
-					}
+				this.createDeferredEntry({
+					ShipperName: oNewInvoice.ShipperName,
+					ProductName: oNewInvoice.ProductName + " (Copia "+(i+1)+")",
+					Quantity: oNewInvoice.Quantity,
+					ExtendedPrice: oNewInvoice.ExtendedPrice,
 				});
 			}
 
-			m.submitChanges({
-				success: function (oData) {
+			m.submitChanges();
 
+			jQuery.when.apply(jQuery, this.aDeferreds)
+				.always(function(){
 					this.getView().setBusy(false);
-
+				}.bind(this))
+				.done(function(){
 					MessageToast.show("Invoice criado com sucesso.");
-					
 					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 					oRouter.navTo("detail", {
 						invoicePath: encodeURIComponent(this.getView().getBindingContext("invoice").getPath())
 					}, true);
-
-				}.bind(this),
-				error: function (oData) {
-
+				}.bind(this))
+				.fail(function(){
 					MessageToast.show("Aconteceu um erro.");
-
-					console.error(oData);
-
-					this.getView().setBusy(false);
-				},
-			});
-
+				}.bind(this));
 		},
 
 		onCancelar: function (oEvent) {
