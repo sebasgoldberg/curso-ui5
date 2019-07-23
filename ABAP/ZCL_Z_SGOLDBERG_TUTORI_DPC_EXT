@@ -4,8 +4,15 @@ class ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT definition
   create public .
 
 public section.
+
+  methods /IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_BEGIN
+    redefinition .
+  methods /IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_END
+    redefinition .
 protected section.
 
+  methods INVOICES_CREATE_ENTITY
+    redefinition .
   methods INVOICES_DELETE_ENTITY
     redefinition .
   methods INVOICES_GET_ENTITY
@@ -18,14 +25,41 @@ protected section.
     redefinition .
   methods SHIPPERSET_GET_ENTITYSET
     redefinition .
-  methods INVOICES_CREATE_ENTITY
-    redefinition .
 private section.
 ENDCLASS.
 
 
 
 CLASS ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT IMPLEMENTATION.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT->/IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_BEGIN
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IT_OPERATION_INFO              TYPE        /IWBEP/T_MGW_OPERATION_INFO
+* | [--->] IT_CHANGESET_INPUT             TYPE        /IWBEP/IF_MGW_CORE_SRV_RUNTIME=>TY_T_BATCH_REQUEST(optional)
+* | [<-->] CV_DEFER_MODE                  TYPE        XSDBOOLEAN(optional)
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method /IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_BEGIN.
+    " Casso seja necessário, adicionar a logica encarregada de
+    " assegurar a atomicidade da operação do CHANGESET, realizando
+    " o respetivos controles transacionais.
+  endmethod.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_Z_SGOLDBERG_TUTORI_DPC_EXT->/IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_END
+* +-------------------------------------------------------------------------------------------------+
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method /IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_END.
+    " Casso seja necessário, adicionar a logica encarregada de
+    " assegurar a atomicidade da operação do CHANGESET, realizando
+    " o respetivos controles transacionais.
+  endmethod.
 
 
 * <SIGNATURE>---------------------------------------------------------------------------------------+
