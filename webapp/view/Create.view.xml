@@ -60,7 +60,7 @@
 						scale: 4 }
 					}" 
 				/>
-			<Label text="Valor" />
+			<Label text="Quantidade de copias" />
 			<Input 
 				value="{
 					path: 'view>/copies',
