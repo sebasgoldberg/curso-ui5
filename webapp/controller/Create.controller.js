@@ -24,7 +24,7 @@ sap.ui.define([
 			var m = this.getView().getModel("invoice");
 			m.metadataLoaded().then(function(){
 
-				var oDeferred = jQuery.Deferred(function(deferred){
+				this.oDeferred = jQuery.Deferred(function(deferred){
 
 					var oContext = m.createEntry('/Invoices',{
 						properties: {
@@ -46,8 +46,6 @@ sap.ui.define([
 
 				}.bind(this));
 
-				this.aDeferreds.push(oDeferred);
-
 			}.bind(this))
 		},
 
@@ -67,60 +65,72 @@ sap.ui.define([
 
 		},
 
-		createDeferredEntry: function(properties){
-			
+		createDeferredEntry: function(oDeferred, iCopyNumber){
+
 			var m = this.getView().getModel('invoice');
-
-			var oDeferred = jQuery.Deferred(function(deferred){
-				m.createEntry('/Invoices', {
-					properties: properties,
-					success: function(){
-						deferred.resolve();
-					},
-					error: function(){
-						deferred.reject();
-					}
-				});
-			}.bind(this))
-
-			this.aDeferreds.push(oDeferred);
-
-			return oDeferred;
-		},
-
-		onGravar: function (oEvent) {
-			var m = this.getView().getModel('invoice');
-
-			this.getView().setBusy(true);
-
-			var iCopies = this.getView().getModel("view").getProperty("/copies");
-			var oNewInvoice = this.getView().getBindingContext("invoice").getObject();
-
-			for (var i=0;i<iCopies; i++){
-				this.createDeferredEntry({
-					ShipperName: oNewInvoice.ShipperName,
-					ProductName: oNewInvoice.ProductName + " (Copia "+(i+1)+")",
-					Quantity: oNewInvoice.Quantity,
-					ExtendedPrice: oNewInvoice.ExtendedPrice,
-				});
-			}
 
 			m.submitChanges();
 
-			jQuery.when.apply(jQuery, this.aDeferreds)
-				.always(function(){
-					this.getView().setBusy(false);
-				}.bind(this))
+			var iCopies = this.getView().getModel("view").getProperty("/copies");
+
+			if (iCopyNumber>iCopies){
+				oDeferred
+					.always(function(){
+						this.getView().setBusy(false);
+					}.bind(this))
+					.done(function(){
+						MessageToast.show("Invoice criado com sucesso.");
+						var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+						oRouter.navTo("detail", {
+							invoicePath: encodeURIComponent(this.getView().getBindingContext("invoice").getPath())
+						}, true);
+					}.bind(this))
+					.fail(function(){
+						MessageToast.show("Aconteceu um erro.");
+					}.bind(this));
+				return;
+			}
+
+			var oNewInvoice = this.getView().getBindingContext("invoice").getObject();
+
+			oDeferred
 				.done(function(){
-					MessageToast.show("Invoice criado com sucesso.");
-					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-					oRouter.navTo("detail", {
-						invoicePath: encodeURIComponent(this.getView().getBindingContext("invoice").getPath())
-					}, true);
+
+					jQuery.Deferred(function(deferred){
+
+						m.createEntry('/Invoices', {
+							properties: {
+								ShipperName: oNewInvoice.ShipperName,
+								ProductName: oNewInvoice.ProductName + " (Copia "+(iCopyNumber)+")",
+								Quantity: oNewInvoice.Quantity,
+								ExtendedPrice: oNewInvoice.ExtendedPrice,
+							},
+							success: function(){
+								deferred.resolve();
+							},
+							error: function(){
+								this.getView().setBusy(false);
+								deferred.reject();
+							}
+						});
+
+						this.createDeferredEntry(deferred, iCopyNumber+1);
+
+					}.bind(this))
+		
 				}.bind(this))
 				.fail(function(){
 					MessageToast.show("Aconteceu um erro.");
 				}.bind(this));
+
+		},
+
+		onGravar: function (oEvent) {
+
+			this.getView().setBusy(true);
+
+			this.createDeferredEntry(this.oDeferred, 1);	
+
 		},
 
 		onCancelar: function (oEvent) {
