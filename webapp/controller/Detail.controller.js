@@ -65,23 +65,30 @@ sap.ui.define([
 
 			this.getView().setBusy(true);
 
-			m.submitChanges({
-				success: function (oData) {
+			var oBindingContext = this.getView().getBindingContext('invoice');
 
-					MessageToast.show("Mudanças realizadas.");
-
-					this.getView().setBusy(false);
-
-				}.bind(this),
-				error: function (oData) {
-
-					MessageToast.show("Aconteceu um erro.");
-
-					console.error(oData);
-
-					this.getView().setBusy(false);
+			m.update(
+				oBindingContext.getPath(),
+				{
+					ExtendedPrice: oBindingContext.getObject().ExtendedPrice,
 				},
-			});
+				{
+					success: function (oData) {
+
+						MessageToast.show("Mudanças realizadas.");
+
+						this.getView().setBusy(false);
+
+					}.bind(this),
+					error: function (oData) {
+
+						MessageToast.show("Aconteceu um erro.");
+
+						console.error(oData);
+
+						this.getView().setBusy(false);
+					},
+				});
 
 		},
 
