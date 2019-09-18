@@ -24,6 +24,7 @@ sap.ui.define([
 			var m = this.getView().getModel("invoice");
 			m.metadataLoaded().then(function(){
 
+				// Create a deferred object and initialize it executing the passed function.
 				var oDeferred = jQuery.Deferred(function(deferred){
 
 					var oContext = m.createEntry('/Invoices',{
@@ -71,6 +72,7 @@ sap.ui.define([
 			
 			var m = this.getView().getModel('invoice');
 
+			// Create a deferred object and initialize it executing the passed function.
 			var oDeferred = jQuery.Deferred(function(deferred){
 				m.createEntry('/Invoices', {
 					properties: properties,
@@ -107,10 +109,14 @@ sap.ui.define([
 
 			m.submitChanges();
 
+			// method when creates a main deferred object from the passed deferreds,
+			// so, when all deferreds were resolved, the main deferred would be resolved.
 			jQuery.when.apply(jQuery, this.aDeferreds)
+				// Once resolved always would be executed.
 				.always(function(){
 					this.getView().setBusy(false);
 				}.bind(this))
+				// Once resolved with success (all deferred were successful) would be executed.
 				.done(function(){
 					MessageToast.show("Invoice criado com sucesso.");
 					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -118,6 +124,7 @@ sap.ui.define([
 						invoicePath: encodeURIComponent(this.getView().getBindingContext("invoice").getPath())
 					}, true);
 				}.bind(this))
+				// In case of fail (at least one deferred fails) would be executed.
 				.fail(function(){
 					MessageToast.show("Aconteceu um erro.");
 				}.bind(this));
