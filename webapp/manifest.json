@@ -50,7 +50,8 @@
         "invoice": {
           "dataSource": "invoiceRemote",
           "settings": {
-            "defaultBindingMode": "TwoWay"
+            "defaultBindingMode": "TwoWay",
+            "useBatch" : false
           }
         }
       },
